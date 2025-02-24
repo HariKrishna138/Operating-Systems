@@ -1,55 +1,31 @@
 #include <stdio.h>
-struct Process {
-    int id;           
-    int at;  
-    int bt;    
-    int wt;  
-    int tat;
-};
-
-void WaitingTime(struct Process proc[], int n) {
-    proc[0].wt = 0;
-    for (int i = 1; i < n; i++) {
-        proc[i].wt = proc[i - 1].wt + proc[i - 1].bt;
+int main(){
+    int i,j,bt[10],wt[10],n,tat[10];
+    float a_wt=0,a_tat=0;
+    printf("Enter number of processes(max=10): ");
+    scanf("%d",&n);
+    printf("Enter process burst time ");
+    for(i=0;i<n;i++){
+        printf("\nEnter p %d burst time ",i+1);
+        scanf("%d",&bt[i]);
     }
-}
-void TurnaroundTime(struct Process proc[], int n) {
-    for (int i = 0; i < n; i++) {
-        proc[i].tat = proc[i].bt + proc[i].wt;
+    wt[0]=0;//Waiting Time
+    for(i=1;i<n;i++){
+        wt[i]=0;
+        for(j=0;j<i;j++){
+            wt[i]+=bt[j];
+        }
     }
-}
-void AvgTime(struct Process proc[], int n) {
-    int t_wt = 0, t_tat = 0;
-    for (int i = 0; i < n; i++) {
-        t_wt += proc[i].wt;
-        t_tat += proc[i].tat;
+    printf("\nProcess\t\tBurst time\twaiting time\tturnaround time");
+    for(i=0;i<n;i++){
+        tat[i]=bt[i]+wt[i];
+        a_wt+=wt[i];
+        a_tat+=tat[i];
+        printf("\np%d\t\t\t%d\t\t\t\t%d\t\t\t%d",i+1,bt[i],wt[i],tat[i]);
     }
-    printf("\nAverage waiting time: %.2f", (float)t_wt / n);
-    printf("\nAverage turnaround time: %.2f", (float)t_tat / n);
-}
-void display(struct Process proc[], int n) {
-    printf("\nProcess ID\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d                  %d               %d        %d             %d\n", proc[i].id, proc[i].at,
-               proc[i].bt, proc[i].wt, proc[i].tat);
-    }
-}
-int main() {
-    int n;
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
-    struct Process proc[n];
-    for (int i = 0; i < n; i++) {
-        printf("\nEnter details for process %d\n", i + 1);
-        proc[i].id = i + 1;
-        printf("Arrival time: ");
-        scanf("%d", &proc[i].at);
-        printf("Burst time: ");
-        scanf("%d", &proc[i].bt);
-    }
-    WaitingTime(proc, n);
-    TurnaroundTime(proc, n);
-    display(proc, n);
-    AvgTime(proc, n);
+    a_wt/=n;
+    a_tat/=n;
+    printf("\nAverage Waiting Time: %f",a_wt);
+    printf("\nAverage TurnAround Time %f",a_tat);
     return 0;
 }
