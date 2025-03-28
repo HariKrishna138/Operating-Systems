@@ -26,8 +26,7 @@ void main(){
         }
         if(flag==0){
                 frames[index++]=a[j];
-                fault++;
-            
+                fault++; 
         }
         for(i=0;i<f;i++){
             printf("%d ",frames[i]);
